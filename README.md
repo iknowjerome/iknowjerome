@@ -16,33 +16,11 @@ A platform for understanding how organizations use generative AI and identifying
 
 The system combines a structured database of more than 1,500 workplace tasks with semantic search, embeddings, generative models, organizational assessments, and an AI based interview system.
 
+The agent harness described further down was built during this work.
+
 **My role:** Co founder and CTO
 
 **Technologies:** Python, Cohere models and embeddings, Supabase, agent based workflows, semantic retrieval
-
-**Source:** Private
-
-### Agent Harness
-
-My own agent harness: the orchestration layer that every LLM project below runs on.
-
-I started building it because the work required it, before there was common vocabulary for this kind of system and before there were frameworks to copy. The hard part of this work was never prompting a model. It is running thousands of model calls unattended, against providers that fail in different ways, and still ending up with structured data you can trust. So I wrote the client, the retry policy, the task format, and the output validation myself.
-
-**Provider abstraction.** One calling interface over three backends: open weight models up to 70B served from my own hardware over a private network, plus the OpenAI and Anthropic APIs. Moving a workload from self hosted inference to a commercial API is a flag rather than a rewrite, which keeps cost, latency, and privacy as runtime decisions instead of architectural ones.
-
-**Failure classification.** Large local models can take minutes per call, so the budget is a 10 minute timeout across 5 attempts, with a heartbeat that reports elapsed time while a request is still in flight. Retries distinguish failure classes: timeouts, server errors, and rate limits are retried, while other client errors are fatal and raised immediately rather than spending four more attempts on a request that will never succeed. Response bodies are captured and surfaced instead of swallowed.
-
-**Tasks defined as data.** Scoring and classification work lives in JSON profiles that declare dimensions, rubrics, permitted values, and rules. The prompt, including a synthesized example of the exact output shape required, is generated from the profile. The same pipeline and the same inputs can therefore be run against entirely different objectives by swapping a single file, with no code change.
-
-**Structured output under adversarial conditions.** Responses are extracted from fenced code blocks or raw text, parsed, and validated item by item against the keys the profile declared. Parse failures are counted and written to JSONL alongside the batch and record identifiers that produced them, and never abort a run.
-
-**Idempotency and resume.** Records carry deterministic content hashed identifiers, results append as each batch completes, and a run can resume from its own output and skip completed work. A job interrupted at hour three does not start from zero.
-
-**Human review as a pipeline stage.** Multi stage pipelines checkpoint their artifacts between stages, and review is a stage rather than an afterthought: clusters and canonical choices can be kept, renamed, split, or dropped interactively, and the decisions persist back into the pipeline.
-
-**Built first, then selectively adopted.** As standard components matured I began pulling them in where they were better than what I had, including MCP servers for tool access and the skill, hook, and plugin model for agent configuration, while continuing to build my own where the available pieces did not fit the problem. Deciding which of the two applies in a given case is where the engineering judgment actually lives.
-
-**Technologies:** Python, Ollama with open weight models up to 70B, OpenAI and Anthropic APIs, private network inference, declarative JSON task profiles, JSONL observability, checkpointed pipelines
 
 **Source:** Private
 
@@ -131,6 +109,28 @@ It is the smallest project listed here and the one that gets used the most.
 **Technologies:** Python, Flask, SQLite, audio playback, text similarity matching
 
 **Source:** Private
+
+## Agent Harness
+
+This is not a separate repository. It is my own harness: the orchestration layer the LLM projects above run on, built during AI Vibe development and reused across the task catalog, synthetic data, and classification work.
+
+I started building it because the work required it, before there was common vocabulary for this kind of system and before there were frameworks to copy. The hard part of this work was never prompting a model. It is running thousands of model calls unattended, against providers that fail in different ways, and still ending up with structured data you can trust. So I wrote the client, the retry policy, the task format, and the output validation myself.
+
+**Provider abstraction.** One calling interface over three backends: open weight models up to 70B served from my own hardware over a private network, plus the OpenAI and Anthropic APIs. Moving a workload from self hosted inference to a commercial API is a flag rather than a rewrite, which keeps cost, latency, and privacy as runtime decisions instead of architectural ones.
+
+**Failure classification.** Large local models can take minutes per call, so the budget is a 10 minute timeout across 5 attempts, with a heartbeat that reports elapsed time while a request is still in flight. Retries distinguish failure classes: timeouts, server errors, and rate limits are retried, while other client errors are fatal and raised immediately rather than spending four more attempts on a request that will never succeed. Response bodies are captured and surfaced instead of swallowed.
+
+**Tasks defined as data.** Scoring and classification work lives in JSON profiles that declare dimensions, rubrics, permitted values, and rules. The prompt, including a synthesized example of the exact output shape required, is generated from the profile. The same pipeline and the same inputs can therefore be run against entirely different objectives by swapping a single file, with no code change.
+
+**Structured output under adversarial conditions.** Responses are extracted from fenced code blocks or raw text, parsed, and validated item by item against the keys the profile declared. Parse failures are counted and written to JSONL alongside the batch and record identifiers that produced them, and never abort a run.
+
+**Idempotency and resume.** Records carry deterministic content hashed identifiers, results append as each batch completes, and a run can resume from its own output and skip completed work. A job interrupted at hour three does not start from zero.
+
+**Human review as a pipeline stage.** Multi stage pipelines checkpoint their artifacts between stages, and review is a stage rather than an afterthought: clusters and canonical choices can be kept, renamed, split, or dropped interactively, and the decisions persist back into the pipeline.
+
+**Built first, then selectively adopted.** As standard components matured I began pulling them in where they were better than what I had, including MCP servers for tool access and the skill, hook, and plugin model for agent configuration, while continuing to build my own where the available pieces did not fit the problem. Deciding which of the two applies in a given case is where the engineering judgment actually lives.
+
+**Technologies:** Python, Ollama with open weight models up to 70B, OpenAI and Anthropic APIs, private network inference, declarative JSON task profiles, JSONL observability, checkpointed pipelines
 
 ## About the Code
 
