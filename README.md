@@ -24,7 +24,9 @@ The system combines a structured database of more than 1,500 workplace tasks wit
 
 ### Agent Harness
 
-The orchestration layer the LLM projects below run on. It exists because the hard part of this work is not prompting a model, it is running thousands of model calls unattended, against providers that fail in different ways, and still ending up with structured data you can trust.
+My own agent harness: the orchestration layer that every LLM project below runs on.
+
+I started building it because the work required it, before there was common vocabulary for this kind of system and before there were frameworks to copy. The hard part of this work was never prompting a model. It is running thousands of model calls unattended, against providers that fail in different ways, and still ending up with structured data you can trust. So I wrote the client, the retry policy, the task format, and the output validation myself.
 
 **Provider abstraction.** One calling interface over three backends: open weight models up to 70B served from my own hardware over a private network, plus the OpenAI and Anthropic APIs. Moving a workload from self hosted inference to a commercial API is a flag rather than a rewrite, which keeps cost, latency, and privacy as runtime decisions instead of architectural ones.
 
@@ -37,6 +39,8 @@ The orchestration layer the LLM projects below run on. It exists because the har
 **Idempotency and resume.** Records carry deterministic content hashed identifiers, results append as each batch completes, and a run can resume from its own output and skip completed work. A job interrupted at hour three does not start from zero.
 
 **Human review as a pipeline stage.** Multi stage pipelines checkpoint their artifacts between stages, and review is a stage rather than an afterthought: clusters and canonical choices can be kept, renamed, split, or dropped interactively, and the decisions persist back into the pipeline.
+
+**Built first, then selectively adopted.** As standard components matured I began pulling them in where they were better than what I had, including MCP servers for tool access and the skill, hook, and plugin model for agent configuration, while continuing to build my own where the available pieces did not fit the problem. Deciding which of the two applies in a given case is where the engineering judgment actually lives.
 
 **Technologies:** Python, Ollama with open weight models up to 70B, OpenAI and Anthropic APIs, private network inference, declarative JSON task profiles, JSONL observability, checkpointed pipelines
 
