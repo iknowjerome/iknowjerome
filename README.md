@@ -98,7 +98,7 @@ The project includes extracting video streams from devices not originally design
 
 ### Family Learning App
 
-A small web application my children use for practice, covering multiple choice quizzes and French dictation exercises.
+A small web application I built when my daughter started high school, to help her practice quiz questions for her studies. It covers multiple choice quizzes and French dictation exercises.
 
 Quizzes are plain JSON files per subject, and the application tracks which questions each child has already been asked so a set can be worked through without repetition. The dictation module plays back pre generated audio for each sentence, then compares what was typed against the original using fuzzy and accent insensitive matching and highlights exactly where the two differ.
 
