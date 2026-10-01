@@ -22,6 +22,26 @@ The system combines a structured database of more than 1,500 workplace tasks wit
 
 **Source:** Private
 
+### Agent Harness
+
+The orchestration layer the LLM projects below run on. It exists because the hard part of this work is not prompting a model, it is running thousands of model calls unattended, against providers that fail in different ways, and still ending up with structured data you can trust.
+
+**Provider abstraction.** One calling interface over three backends: open weight models up to 70B served from my own hardware over a private network, plus the OpenAI and Anthropic APIs. Moving a workload from self hosted inference to a commercial API is a flag rather than a rewrite, which keeps cost, latency, and privacy as runtime decisions instead of architectural ones.
+
+**Failure classification.** Large local models can take minutes per call, so the budget is a 10 minute timeout across 5 attempts, with a heartbeat that reports elapsed time while a request is still in flight. Retries distinguish failure classes: timeouts, server errors, and rate limits are retried, while other client errors are fatal and raised immediately rather than spending four more attempts on a request that will never succeed. Response bodies are captured and surfaced instead of swallowed.
+
+**Tasks defined as data.** Scoring and classification work lives in JSON profiles that declare dimensions, rubrics, permitted values, and rules. The prompt, including a synthesized example of the exact output shape required, is generated from the profile. The same pipeline and the same inputs can therefore be run against entirely different objectives by swapping a single file, with no code change.
+
+**Structured output under adversarial conditions.** Responses are extracted from fenced code blocks or raw text, parsed, and validated item by item against the keys the profile declared. Parse failures are counted and written to JSONL alongside the batch and record identifiers that produced them, and never abort a run.
+
+**Idempotency and resume.** Records carry deterministic content hashed identifiers, results append as each batch completes, and a run can resume from its own output and skip completed work. A job interrupted at hour three does not start from zero.
+
+**Human review as a pipeline stage.** Multi stage pipelines checkpoint their artifacts between stages, and review is a stage rather than an afterthought: clusters and canonical choices can be kept, renamed, split, or dropped interactively, and the decisions persist back into the pipeline.
+
+**Technologies:** Python, Ollama with open weight models up to 70B, OpenAI and Anthropic APIs, private network inference, declarative JSON task profiles, JSONL observability, checkpointed pipelines
+
+**Source:** Private
+
 ### Synthetic Task Catalogs
 
 A pipeline for generating large volumes of realistic workplace tasks and reducing them to a clean canonical catalog.
