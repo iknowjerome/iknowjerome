@@ -18,6 +18,8 @@ The system combines a structured database of more than 1,500 workplace tasks wit
 
 The agent harness described further down was built during this work.
 
+<img src="assets/ai-vibe-platform.png" alt="AI Vibe Platform" width="900">
+
 **My role:** Co founder and CTO
 
 **Technologies:** Python, Cohere models and embeddings, Supabase, agent based workflows, semantic retrieval
@@ -64,6 +66,8 @@ A self hosted system for consolidating financial accounts, investments, holdings
 
 The project explores financial data ingestion, normalization, account reconciliation, investment analytics, and privacy conscious AI assisted development.
 
+<img src="assets/folio.png" alt="Personal Finance Platform" width="700">
+
 **Technologies:** TypeScript, Node.js, PostgreSQL, APIs, MCP, self hosted infrastructure
 
 **Source:** Private
@@ -73,6 +77,8 @@ The project explores financial data ingestion, normalization, account reconcilia
 A system for collecting and analyzing energy usage across my home, including heating, cooling, electric loads, an EV, and environmental telemetry.
 
 It combines data from multiple devices and APIs into a common historical dataset that can be used to understand consumption patterns and eventually optimize energy usage.
+
+<img src="assets/home-energy-dashboard.png" alt="Home Energy Platform dashboard" width="900">
 
 **Technologies:** Python, APIs, Docker, time series data, home automation, IoT
 
@@ -85,6 +91,18 @@ A small collection of Linux systems that run storage, media, backups, monitoring
 This has increasingly become a playground for experimenting with lightweight distributed infrastructure, remote administration, containers, observability, and resilient services.
 
 **Technologies:** Debian, Docker, Tailscale, NUT, systemd, NAS storage, Linux networking
+
+**Source:** Private
+
+### Home Frame
+
+A wall mounted digital art display built around a repurposed screen and integrated into my home infrastructure.
+
+The system is designed to make the display behave more like a framed artwork than a conventional screen, with remotely managed content and automation controlling what is shown and when.
+
+<img src="assets/home-frame.png" alt="Home Frame digital art display" width="650">
+
+**Technologies:** Linux, display automation, remote administration, home infrastructure
 
 **Source:** Private
 
@@ -105,6 +123,8 @@ A small web application I built when my daughter started high school, to help he
 Quizzes are plain JSON files per subject, and the application tracks which questions each child has already been asked so a set can be worked through without repetition. The dictation module plays back pre generated audio for each sentence, then compares what was typed against the original using fuzzy and accent insensitive matching and highlights exactly where the two differ.
 
 It is the smallest project listed here and the one that gets used the most.
+
+<img src="assets/quizme-screenshot.png" alt="Family Learning App" width="700">
 
 **Technologies:** Python, Flask, SQLite, audio playback, text similarity matching
 
