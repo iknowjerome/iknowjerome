@@ -108,11 +108,15 @@ The system is designed to make the display behave more like a framed artwork tha
 
 ### Camera and Event Processing
 
-A self hosted video pipeline integrating consumer cameras with local streaming and event processing infrastructure.
+A self hosted video and computer vision pipeline built around consumer Eufy cameras.
 
-The project includes extracting video streams from devices not originally designed for this kind of integration, transcoding and stream management, and experimentation with motion triggered processing.
+The project includes extracting camera streams and events outside the vendor application, exposing HEVC video locally through go2rtc, and experimenting with computer vision models including YOLO for object detection and SAM 3 for segmentation.
 
-**Technologies:** Docker, go2rtc, FFmpeg, RTSP, HEVC, event driven processing
+The goal is to turn otherwise closed consumer camera hardware into an open local processing pipeline that can support custom automation, analysis, and event detection.
+
+<img src="assets/camera.jpeg" alt="Eufy camera view" width="600">
+
+**Technologies:** Docker, go2rtc, FFmpeg, HEVC, Eufy SDK bridge, YOLO, SAM 3, computer vision, event driven processing
 
 **Source:** Private
 
