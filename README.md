@@ -66,7 +66,7 @@ The analysis also derives descent from the per-second barometric altitude stream
 
 Body mass is part of the same dataset. A small companion service reads my bathroom scale directly over the LAN after the manufacturer shut down the cloud service it previously depended on, and merges those measurements into the same analytical store.
 
-<img src="assets/fitlab-training-log.png" alt="FitLab training history and fitness analysis" width="900">
+<img src="assets/running-analysis.png" alt="FitLab training history and fitness analysis" width="900">
 
 **Technologies:** Python, DuckDB, Parquet, pyarrow, FIT decoding, SQL analytics, Grafana, Docker, systemd
 
