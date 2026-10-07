@@ -30,6 +30,41 @@ The agent harness described further down was built during this work.
 
 **Source:** Private
 
+### Home Energy Platform
+
+A system for collecting and analyzing energy usage across my home, including heating, cooling, electric loads, an EV, and environmental telemetry.
+
+It combines data from multiple devices and APIs into a common historical dataset that can be used to understand consumption patterns and eventually optimize energy usage.
+
+<img src="assets/home-energy-dashboard.png" alt="Home Energy Platform dashboard" width="900">
+
+**Technologies:** Python, APIs, Docker, time-series data, home automation, IoT
+
+**Source:** Private
+
+### Slip
+
+A personal writing assistant for macOS that I'm building to understand how these systems work underneath. A global shortcut opens a panel in any app where I type or dictate rough notes. Slip returns a draft in my voice, I edit it, then copy or insert it. The original app is untouched until I choose.
+
+I treated it as a set of layers, each one a place to learn something.
+
+**Memory.** What the assistant knows about me is plain Markdown: global files about how I write, and project files I pick per task. There is no database and no hidden profile. Files are re-read when they change, so I can edit its memory in any text editor.
+
+**Perception.** Slip reads the window I was in (Slack, Gmail, Messages) through the macOS accessibility tree, using per-app extractors, since "read everything visible" is wrong in a different way for each app.
+
+**Security.** Before anything leaves the machine, a guard screens it. I implemented a native Swift scanner following gitleaks' design (keyword prefilters, entropy, allowlists), using its rule set. A second detector catches cards, IBANs and Canadian SINs, each confirmed by checksum. Screen content stays in memory only for the session, and a preview shows the exact request before it is sent.
+
+**Output.** Inserting text saves and restores the full clipboard, but only if nobody else wrote to it in between.
+
+The model sits behind a small provider protocol, so any OpenAI-compatible endpoint, hosted or local, will work. Slip is inspired by [ClipSlop](https://github.com/mekedron/ClipSlop) but is not a fork. A few low-level pieces are adapted from it under its MIT license.
+
+<img src="assets/slip.png" alt="Home Energy Platform dashboard" width="900">
+
+**Technologies:** Swift, SwiftUI, AppKit, macOS Accessibility API, Keychain, streaming LLM APIs, gitleaks-style secret detection, Markdown context
+
+**Source:** Private
+
+
 ### LLM-Based Contact Classification
 
 A tool for scoring and classifying large contact lists against a defined commercial objective.
@@ -72,18 +107,6 @@ Body mass is part of the same dataset. A small companion service reads my bathro
 
 **Source:** Private
 
-### Home Energy Platform
-
-A system for collecting and analyzing energy usage across my home, including heating, cooling, electric loads, an EV, and environmental telemetry.
-
-It combines data from multiple devices and APIs into a common historical dataset that can be used to understand consumption patterns and eventually optimize energy usage.
-
-<img src="assets/home-energy-dashboard.png" alt="Home Energy Platform dashboard" width="900">
-
-**Technologies:** Python, APIs, Docker, time-series data, home automation, IoT
-
-**Source:** Private
-
 ### Home Infrastructure
 
 A small collection of Linux systems that run storage, media, backups, monitoring, networking, UPS management, and home automation services.
@@ -96,7 +119,7 @@ This has increasingly become a playground for experimenting with lightweight dis
 
 ### Home Frame
 
-A wall-mounted digital art display built around a repurposed screen and integrated into my home infrastructure.
+A wall-mounted digital art display built around a repurposed screen and integrated into my home infrastructure. On a daily basis, it pulls art from The Met, the Cleveland Museum of Art, the Art Institute of Chicago, Wikimedia Commons, NASA, and Pexels.
 
 The system is designed to make the display behave more like a framed artwork than a conventional screen, with remotely managed content and automation controlling what is shown and when.
 
